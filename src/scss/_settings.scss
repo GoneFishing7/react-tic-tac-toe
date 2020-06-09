@@ -1,0 +1,13 @@
+.settings {
+    // Flexbox stuff
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    transition: visibility 0s 2s ease-out;
+
+    margin: 0 20vw;
+    & > * {
+        margin: 10px 0;
+    }
+}
