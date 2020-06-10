@@ -98,6 +98,7 @@ class Game extends React.Component {
         let emotion = AI.getEmotion(
             this.state.squares,
             this.props.settings["player-2-mode"],
+            this.state.isP1sTurn ? "ply1" : "ply2",
             this.state.symbols
         );
         if (this.state.AiEmotion === emotion) {
