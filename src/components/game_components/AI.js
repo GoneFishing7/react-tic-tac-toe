@@ -37,7 +37,6 @@ class AI {
      */
     static getEmotion = (squares, mode, symbols) => {
         // Check for terminal state
-        console.log({ squares, symbols });
         let boardState = BoardHelpers.evaluateSquares(squares, symbols);
         if (boardState) {
             if (boardState === "ply1") {
@@ -49,6 +48,7 @@ class AI {
     };
 
     static findBestMove = (squares, symbols) => {
+        // debugger;
         let possibleMoves = BoardHelpers.getBlankSquares(squares);
         let bestMoves = [];
         let bestScore = -2;
@@ -58,8 +58,7 @@ class AI {
                 symbols["ply2"],
                 move
             );
-            console.log({ squaresWithMove });
-            let moveEval = AI.evaluateSquaresMinimax(
+            let moveEval = -this.evaluateSquaresMinimax(
                 squaresWithMove,
                 -1,
                 symbols
@@ -101,7 +100,7 @@ class AI {
         // Check for terminal positions
         let currentBoardState = BoardHelpers.evaluateSquares(squares, symbols);
         if (currentBoardState) {
-            return (currentBoardState === "ply1" ? -1 : 1) * turn;
+            return (currentBoardState === "ply1" ? -1 : 1) * turn; // NOTE: Adjusted for minimizer
         }
         // Check current player
         let currentPlayer = turn === 1 ? "ply2" : "ply1";
@@ -114,16 +113,14 @@ class AI {
                 symbols[currentPlayer],
                 move
             );
-            let boardWithMoveEval = this.evaluateSquaresMinimax(
+            let boardWithMoveEval = -this.evaluateSquaresMinimax(
                 boardWithMove,
                 -turn,
                 symbols
             );
-            // prettier-ignore
-            bestEval = 
-                (!bestEval) ? boardWithMoveEval : 
-                (boardWithMoveEval > bestEval) ? boardWithMoveEval :
-                bestEval;
+            if (boardWithMoveEval > bestEval) {
+                bestEval = boardWithMoveEval;
+            }
         }
         if (bestEval === -2 || possibleMoves.length === 0) {
             return 0;
