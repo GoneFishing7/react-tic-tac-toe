@@ -25,6 +25,29 @@ class AI {
         return moveFunction(squares, symbols);
     };
 
+    /**
+     * Returns an kaomoji based on the computer's evaluation
+     *
+     * @method
+     * @static
+     * @param {string[][]} squares The board
+     * @param {"esy" | "med" | "imp"} mode The mode
+     * @param {Object} symbols The symbols, eg. {ply1: X, ply2: O}
+     * @memberof AI
+     */
+    static getEmotion = (squares, mode, symbols) => {
+        // Check for terminal state
+        console.log({ squares, symbols });
+        let boardState = BoardHelpers.evaluateSquares(squares, symbols);
+        if (boardState) {
+            if (boardState === "ply1") {
+                return "(╯°□°）╯︵ ┻━┻";
+            } else {
+                return "(✿◠‿◠)";
+            }
+        }
+    };
+
     static findBestMove = (squares, symbols) => {
         let possibleMoves = BoardHelpers.getBlankSquares(squares);
         let bestMoves = [];

@@ -20,6 +20,7 @@ class Game extends React.Component {
             //     ["X", "O", "O"],
             // ],
             winner: null,
+            AiEmotion: null,
         };
     }
 
@@ -43,16 +44,23 @@ class Game extends React.Component {
                     {this.state.symbols[this.state.isP1sTurn ? "ply1" : "ply2"]}
                     )
                 </p>
+                {this.props.settings["player-2-mode"] !== "hum" ? (
+                    <p>AI: {this.state.AiEmotion || "ㄟ( ▔, ▔ )ㄏ"}</p>
+                ) : (
+                    ""
+                )}
             </div>
         );
     }
 
     componentDidMount() {
         this.AiTurnCheck();
+        this.updateAiEmotion();
     }
 
     componentDidUpdate() {
         this.AiTurnCheck();
+        this.updateAiEmotion();
     }
 
     AiTurnCheck = () => {
@@ -80,6 +88,24 @@ class Game extends React.Component {
             }
             this.makeAiMove();
         }
+    };
+
+    updateAiEmotion = () => {
+        // Make sure AI is used
+        if (this.props.settings["player-2-mode"] === "hum") {
+            return;
+        }
+        let emotion = AI.getEmotion(
+            this.state.squares,
+            this.props.settings["player-2-mode"],
+            this.state.symbols
+        );
+        if (this.state.AiEmotion === emotion) {
+            return;
+        }
+        this.setState({
+            AiEmotion: emotion,
+        });
     };
 
     makeAiMove = () => {

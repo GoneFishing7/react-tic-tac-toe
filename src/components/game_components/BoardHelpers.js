@@ -4,8 +4,8 @@ class BoardHelpers {
      *
      * @static
      * @param {Object[]} squares The squares to evaluate
-     * @param {string[][]} symbols The symbols to check for, eg. [X,O]
-     * @returns {string} The winning symbol, else null
+     * @param {Object} symbols The symbols to check for, eg. {ply1: X,ply2: O}
+     * @returns {string} The winning player, else null
      * @memberof BoardHelpers
      */
     static evaluateSquares(squares, symbols) {
