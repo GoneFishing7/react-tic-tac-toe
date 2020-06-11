@@ -1,20 +1,28 @@
 import React from "react";
 
-class FakeTypedHeader extends React.Component {
-    constructor(props) {
+interface Props {
+    content: string
+}
+interface State {
+    toType: string,
+    typed: string
+}
+
+class FakeTypedHeader extends React.Component<Props, State> {
+    constructor(props: Readonly<Props>) {
         super(props);
         this.state = {
-            words: props.children,
-            text: "",
+            toType: props.content,
+            typed: "",
         };
         let currentTime = 100;
-        for (let i = 0; i < this.state.words.length; i++) {
+        for (let i = 0; i < this.state.toType.length; i++) {
             let newWaitingTime = Math.random() * 200;
             setTimeout(() => {
                 this.setState((oldState) => {
                     return {
-                        words: oldState.words.slice(1, oldState.words.length),
-                        text: oldState.text + oldState.words.slice(0, 1),
+                        toType: oldState.toType.slice(1, oldState.toType.length),
+                        typed: oldState.typed + oldState.toType.slice(0, 1),
                     };
                 });
             }, currentTime + newWaitingTime);
@@ -24,7 +32,7 @@ class FakeTypedHeader extends React.Component {
     render() {
         return (
             <h1>
-                >{this.state.text}
+                &gt;{this.state.typed}
                 <span className="blinking unselectable">_</span>
             </h1>
         );

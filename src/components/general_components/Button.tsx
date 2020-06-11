@@ -1,11 +1,22 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-class Button extends React.Component {
+interface Props {
+    handleClick: () => void;
+    color?: string;
+    largeButton?: boolean;
+    roundedLeft?: boolean;
+    roundedRight?: boolean;
+    roundedNone?: boolean;
+    staticOnHover?: boolean;
+}
+
+class Button extends React.Component<Props> {
     render() {
         const classes = ["button"];
         if (this.props.color) {
             classes.push("button-" + this.props.color);
+        } else {
+            classes.push("button-gray");
         }
         if (this.props.largeButton) {
             classes.push("button-large");
@@ -27,20 +38,10 @@ class Button extends React.Component {
                 onClick={this.props.handleClick}
                 className={classes.join(" ")}
             >
-                {this.props.content}
+                {this.props.children}
             </button>
         );
     }
 }
-
-Button.propTypes = {
-    color: PropTypes.string,
-    content: PropTypes.string,
-    handleClick: PropTypes.func,
-    roundedLeft: PropTypes.bool,
-    roundedRight: PropTypes.bool,
-    roundedNone: PropTypes.bool,
-    staticOnHover: PropTypes.bool,
-};
 
 export default Button;

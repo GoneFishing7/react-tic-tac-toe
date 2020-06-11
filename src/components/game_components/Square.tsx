@@ -1,6 +1,12 @@
 import React from "react";
 
-class Square extends React.Component {
+interface Props {
+    clickHandler: () => void,
+    symbol: string,
+    isMidVert: boolean
+}
+
+class Square extends React.Component<Props> {
     render() {
         return (
             <td

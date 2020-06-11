@@ -1,5 +1,10 @@
 import BoardHelpers from "./BoardHelpers";
+import { Symbols, Square } from "../general_components/Types";
 const MEDIUM_COMPUTER_DEPTH = 2;
+
+interface findMove {
+    (squares: string[][], symbols: Symbols): Square;
+}
 
 class AI {
     /**
@@ -7,22 +12,29 @@ class AI {
      *
      * @method
      * @static
-     * @param {string[][]} squares The board
-     * @param {"esy" | "med" | "imp"} mode The mode
-     * @param {Object} symbols The symbols, eg. {ply1: X, ply2: O}
+     * @param squares The board
+     * @param mode The mode
+     * @param  symbols The symbols, eg. {ply1: X, ply2: O}
      * @memberof AI
      */
-    static getMove = (squares, mode, symbols) => {
+    static getMove = (
+        squares: string[][],
+        mode: string | null,
+        symbols: Symbols
+    ): Square => {
         // Make sure there are still blank squares
         if (!BoardHelpers.getBlankSquares(squares).length) {
-            return null;
+            return {
+                row: -1,
+                cell: -1,
+            };
         }
         // Redirect to move generator based on mode inputted
         // prettier-ignore
         let moveFunction =
-            (mode === "med") ? (squares, symbols) => { return this.findBestMove(squares, symbols, MEDIUM_COMPUTER_DEPTH) } :
-            (mode === "imp") ? this.findBestMove : 
-            this.findRandomMove
+            (mode === "med") ? (squares: string[][], symbols: Symbols) => { return AI.findBestMove(squares, symbols, MEDIUM_COMPUTER_DEPTH) } :
+            (mode === "imp") ? AI.findBestMove : 
+            AI.findRandomMove
         return moveFunction(squares, symbols);
     };
 
@@ -37,7 +49,12 @@ class AI {
      * @param {Object} symbols The symbols, eg. {ply1: X, ply2: O}
      * @memberof AI
      */
-    static getEmotion = (squares, mode, turn, symbols) => {
+    static getEmotion = (
+        squares: string[][],
+        mode: string | null,
+        turn: "ply1" | "ply2",
+        symbols: Symbols
+    ): string => {
         // Check for terminal state
         let boardState = BoardHelpers.evaluateSquares(squares, symbols);
         if (boardState) {
@@ -53,7 +70,7 @@ class AI {
         }
         // Give emotion based on com mode and evaluated state
         if (mode === "imp") {
-            let minimaxEval = this.evaluateSquaresMinimax(
+            let minimaxEval = AI.evaluateSquaresMinimax(
                 squares,
                 turn === "ply1" ? -1 : 1,
                 symbols
@@ -66,7 +83,7 @@ class AI {
                 return "╰(*°▽°*)╯";
             }
         } else if (mode === "med") {
-            let basicEval = this.evaluateSquaresMinimax(
+            let basicEval = AI.evaluateSquaresMinimax(
                 squares,
                 turn === "ply1" ? -1 : 1,
                 symbols,
@@ -82,12 +99,17 @@ class AI {
         } else if (mode === "esy") {
             return "༼ つ ◕_◕ ༽つ";
         }
+        return "w(ﾟДﾟ)w";
     };
 
-    static findBestMove = (squares, symbols, maxDepth = Infinity) => {
+    static findBestMove = (
+        squares: string[][],
+        symbols: Symbols,
+        maxDepth = Infinity
+    ): Square => {
         // debugger;
         let possibleMoves = BoardHelpers.getBlankSquares(squares);
-        let bestMoves = [];
+        let bestMoves: Square[] = [];
         let bestScore = -2;
         for (const move of possibleMoves) {
             let squaresWithMove = BoardHelpers.copyWithMove(
@@ -95,7 +117,7 @@ class AI {
                 symbols["ply2"],
                 move
             );
-            let moveEval = -this.evaluateSquaresMinimax(
+            let moveEval = -AI.evaluateSquaresMinimax(
                 squaresWithMove,
                 -1,
                 symbols,
@@ -118,24 +140,24 @@ class AI {
      *
      * @method
      * @static
-     * @param {string[][]} squares The squares to evaluate.
-     * @param {Number} turn The turn 1 for com, -1 for player
-     * @param {Object} symbols The symbols, eg. [ply1: X, ply2: O]
-     * @param {Number} maxDepth THe maximum depth to analyze to.
-     * @param {Number} currentDepth THe depth currently analyzed to
-     * @returns {Number} 1 for com winning, -1 for player winning, 0 for equal
+     * @param squares The squares to evaluate.
+     * @param turn The turn 1 for com, -1 for player
+     * @param symbols The symbols, eg. [ply1: X, ply2: O]
+     * @param maxDepth THe maximum depth to analyze to.
+     * @param currentDepth THe depth currently analyzed to
+     * @returns 1 for com winning, -1 for player winning, 0 for equal. -2 for something went wrong
      * @memberof AI
      */
     static evaluateSquaresMinimax = (
-        squares,
-        turn,
-        symbols,
+        squares: string[][],
+        turn: number,
+        symbols: Symbols,
         maxDepth = Infinity,
         currentDepth = 0
-    ) => {
+    ): number => {
         if (currentDepth >= maxDepth) {
             console.log("Exceded depth");
-            return null;
+            return -2;
         }
         // Check for terminal positions
         let currentBoardState = BoardHelpers.evaluateSquares(squares, symbols);
@@ -153,7 +175,7 @@ class AI {
                 symbols[currentPlayer],
                 move
             );
-            let boardWithMoveEval = -this.evaluateSquaresMinimax(
+            let boardWithMoveEval = -AI.evaluateSquaresMinimax(
                 boardWithMove,
                 -turn,
                 symbols,
@@ -178,11 +200,11 @@ class AI {
      *
      * @method
      * @static
-     * @param {string[][]} squares The squares
+     * @param squares The squares
      * @returns A random move in form {ply1: x, ply2: y}
      * @memberof AI
      */
-    static findRandomMove(squares) {
+    static findRandomMove(squares: string[][]): Square {
         const blankSquares = BoardHelpers.getBlankSquares(squares);
         return BoardHelpers.randFromArr(blankSquares);
     }

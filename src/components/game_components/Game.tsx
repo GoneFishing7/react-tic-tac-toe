@@ -2,15 +2,29 @@ import React from "react";
 import Board from "./Board";
 import AI from "./AI";
 import BoardHelpers from "./BoardHelpers";
+import { SettingsInterface, Symbols } from "../general_components/Types";
 
-class Game extends React.Component {
-    constructor(props) {
+interface Props {
+    settings: SettingsInterface;
+}
+
+interface State {
+    winner: string | null;
+    isP1sTurn: boolean;
+    symbols: Symbols;
+    isFinished: boolean;
+    squares: string[][];
+    AiEmotion: string | null;
+}
+
+class Game extends React.Component<Props, State> {
+    constructor(props: Readonly<Props>) {
         super(props);
         this.state = {
-            isP1sTurn: props.settings["who-is-moving-first"] === "ply1",
+            isP1sTurn: props.settings["whoIsMovingFirst"] === "ply1",
             symbols: {
-                ply1: props.settings["who-is-o"] === "ply1" ? "O" : "X",
-                ply2: props.settings["who-is-o"] === "ply1" ? "X" : "O",
+                ply1: props.settings["whoIsO"] === "ply1" ? "O" : "X",
+                ply2: props.settings["whoIsO"] === "ply1" ? "X" : "O",
             },
             isFinished: false,
             squares: Array(3).fill(Array(3).fill(null)),
@@ -44,7 +58,7 @@ class Game extends React.Component {
                     {this.state.symbols[this.state.isP1sTurn ? "ply1" : "ply2"]}
                     )
                 </p>
-                {this.props.settings["player-2-mode"] !== "hum" ? (
+                {this.props.settings["playerTwoMode"] !== "hum" ? (
                     <p>AI: {this.state.AiEmotion || "ㄟ( ▔, ▔ )ㄏ"}</p>
                 ) : (
                     ""
@@ -92,12 +106,12 @@ class Game extends React.Component {
 
     updateAiEmotion = () => {
         // Make sure AI is used
-        if (this.props.settings["player-2-mode"] === "hum") {
+        if (this.props.settings["playerTwoMode"] === "hum") {
             return;
         }
         let emotion = AI.getEmotion(
             this.state.squares,
-            this.props.settings["player-2-mode"],
+            this.props.settings["playerTwoMode"],
             this.state.isP1sTurn ? "ply1" : "ply2",
             this.state.symbols
         );
@@ -112,12 +126,12 @@ class Game extends React.Component {
     makeAiMove = () => {
         if (
             !this.state.isP1sTurn &&
-            this.props.settings["player-2-mode"] !== "hum"
+            this.props.settings["playerTwoMode"] !== "hum"
         ) {
             this.setState((prevState) => {
                 let comMove = AI.getMove(
                     this.state.squares,
-                    this.props.settings["player-2-mode"],
+                    this.props.settings["playerTwoMode"],
                     this.state.symbols
                 );
                 let newSquares = BoardHelpers.copyWithMove(
@@ -135,7 +149,7 @@ class Game extends React.Component {
         }
     };
 
-    handleClick = (rowIndex, cellIndex) => {
+    handleClick = (rowIndex: number, cellIndex: number) => {
         // Make sure we're still going
         if (this.state.isFinished) {
             return;
@@ -147,7 +161,7 @@ class Game extends React.Component {
         // Make sure the com isn't thinking
         if (
             !this.state.isP1sTurn &&
-            this.props.settings["player-2-mode"] !== "hum"
+            this.props.settings["playerTwoMode"] !== "hum"
         ) {
             return;
         }

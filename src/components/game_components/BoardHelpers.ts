@@ -1,14 +1,19 @@
+import { Symbols, Square } from "../general_components/Types";
+
 class BoardHelpers {
     /**
      * Evaluate squares passed in
      *
      * @static
-     * @param {Object[]} squares The squares to evaluate
-     * @param {Object} symbols The symbols to check for, eg. {ply1: X,ply2: O}
-     * @returns {string} The winning player, else null
+     * @param squares The squares to evaluate
+     * @param symbols The symbols to check for, eg. {ply1: X,ply2: O}
+     * @returns The winning player, else null
      * @memberof BoardHelpers
      */
-    static evaluateSquares(squares, symbols) {
+    static evaluateSquares(
+        squares: string[][],
+        symbols: Symbols
+    ): string | null {
         for (const symbolKey of Object.keys(symbols)) {
             const symbol = symbols[symbolKey];
             // Check horizontals
@@ -54,11 +59,11 @@ class BoardHelpers {
      * Get all the blank squares of the board (squares that are null or have a falsy value)
      *
      * @static
-     * @param {string[][]} squares The squares to check
-     * @returns {Object[]} The squares found, in form {row: x, col: y}
+     * @param squares The squares to check
+     * @returns The squares found, in form {row: x, col: y}
      * @memberof BoardHelpers
      */
-    static getBlankSquares(squares) {
+    static getBlankSquares(squares: string[][]): Square[] {
         let blanks = [];
         for (let rowIndex = 0; rowIndex < squares.length; rowIndex++) {
             for (
@@ -81,11 +86,11 @@ class BoardHelpers {
      * Returns a random element from an array
      *
      * @static
-     * @param {Array} arr The array to find an element from
+     * @param arr The array to find an element from
      * @returns A random element
      * @memberof BoardHelpers
      */
-    static randFromArr(arr) {
+    static randFromArr(arr: Array<any>): any {
         return arr[Math.floor(Math.random() * arr.length)];
     }
 
@@ -93,13 +98,17 @@ class BoardHelpers {
      * Deep copies a Two-Dimensional Array of Squares with a move
      *
      * @static
-     * @param {string[][]} arr The 2D array of squares
-     * @param {string} symbol The symbol of the move
-     * @param {Object} move The position of the move, in form {row: x, cel: y}
+     * @param arr The 2D array of squares
+     * @param symbol The symbol of the move
+     * @param move The position of the move, in form {row: x, cel: y}
      * @returns A new 2D array of squares with the move applied
      * @memberof BoardHelpers
      */
-    static copyWithMove(arr, symbol, move) {
+    static copyWithMove(
+        arr: string[][],
+        symbol?: string,
+        move?: Square
+    ): string[][] {
         let newArray = [];
         for (let i = 0; i < arr.length; i++) {
             newArray.push(arr[i].slice());
@@ -114,11 +123,11 @@ class BoardHelpers {
      * Takes the board and converts it to a nice string
      *
      * @static
-     * @param {string[][]} squares The board
-     * @returns {string} The board to string
+     * @param squares The board
+     * @returns The board to string
      * @memberof BoardHelpers
      */
-    static boardToString(squares) {
+    static boardToString(squares: string[][]): string {
         let horizontalLine = "-------------\n";
         let returnString = "\n    1   2   3\n  " + horizontalLine;
         /*

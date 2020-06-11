@@ -1,8 +1,13 @@
 import React from "react";
 import Square from "./Square";
 
-class Board extends React.Component {
-    renderSquare(rowIndex, cellIndex) {
+interface Props {
+    squares: string[][],
+    handleClick: (rowIndex: number, cellIndex: number) => void,
+}
+
+class Board extends React.Component<Props> {
+    renderSquare(rowIndex: number, cellIndex: number) {
         const square = this.props.squares[rowIndex][cellIndex];
         return (
             <Square
@@ -20,13 +25,13 @@ class Board extends React.Component {
         return (
             <table className="board">
                 <tbody>
-                    {this.props.squares.map((row, rowIndex) => {
+                    {this.props.squares.map((row: string[], rowIndex: number) => {
                         return (
                             <tr
                                 key={rowIndex}
                                 className={rowIndex === 1 ? "middle-row" : ""}
                             >
-                                {row.map((cell, cellIndex) => {
+                                {row.map((cell: string, cellIndex: number) => {
                                     return this.renderSquare(
                                         rowIndex,
                                         cellIndex
