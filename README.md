@@ -2,7 +2,7 @@
 A React-based version of my original project: https://github.com/GoneFishing7/Tic-Tac-Toe.
 
 ## TODO
-- [x] Add computer emotions?
+- [ ] Add computer emotions?
 - [ ] Add settings changing
 - [ ] Add Reset Button
 
