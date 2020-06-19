@@ -1,7 +1,7 @@
 import React from "react";
 
 interface Props {
-    handleClick: () => void;
+    handleClick?: () => void;
     color?: string;
     largeButton?: boolean;
     roundedLeft?: boolean;

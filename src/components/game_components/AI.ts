@@ -14,12 +14,12 @@ class AI {
      * @static
      * @param squares The board
      * @param mode The mode
-     * @param  symbols The symbols, eg. {ply1: X, ply2: O}
+     * @param symbols The symbols, eg. {ply1: X, ply2: O}
      * @memberof AI
      */
     static getMove = (
         squares: string[][],
-        mode: string | null,
+        mode: string | null | undefined,
         symbols: Symbols
     ): Square => {
         // Make sure there are still blank squares
@@ -51,7 +51,7 @@ class AI {
      */
     static getEmotion = (
         squares: string[][],
-        mode: string | null,
+        mode: string | null | undefined,
         turn: "ply1" | "ply2",
         symbols: Symbols
     ): string => {
@@ -123,7 +123,6 @@ class AI {
                 symbols,
                 maxDepth
             );
-            console.log({ moveEval });
             if (moveEval > bestScore) {
                 bestScore = moveEval;
                 bestMoves = [move];
@@ -156,7 +155,6 @@ class AI {
         currentDepth = 0
     ): number => {
         if (currentDepth >= maxDepth) {
-            console.log("Exceded depth");
             return -2;
         }
         // Check for terminal positions

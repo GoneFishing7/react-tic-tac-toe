@@ -21,7 +21,10 @@ class Game extends React.Component<Props, State> {
     constructor(props: Readonly<Props>) {
         super(props);
         this.state = {
-            isP1sTurn: props.settings["whoIsMovingFirst"] === "ply1",
+            isP1sTurn:
+                props.settings["whoIsMovingFirst"] === "rnd"
+                    ? Math.random() >= 0.5
+                    : props.settings["whoIsMovingFirst"] === "ply1",
             symbols: {
                 ply1: props.settings["whoIsO"] === "ply1" ? "O" : "X",
                 ply2: props.settings["whoIsO"] === "ply1" ? "X" : "O",

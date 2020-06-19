@@ -9,10 +9,14 @@ export interface Square {
     symbol?: string;
 }
 
+// export interface SettingsInterface {
+//     [whoIsO: string]: "ply1" | "ply2" | string | null;
+//     whoIsMovingFirst: "ply1" | "ply2" | "rnd" | string | null;
+//     playerTwoMode: Mode | string | null;
+// }
+
 export interface SettingsInterface {
-    [whoIsO: string]: "ply1" | "ply2" | string | null;
-    whoIsMovingFirst: "ply1" | "ply2" | string | null;
-    playerTwoMode: Mode | string | null;
+    [index: string]: string | undefined | null;
 }
 
 export type Mode = "esy" | "med" | "imp" | "hum";
