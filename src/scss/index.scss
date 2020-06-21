@@ -41,6 +41,7 @@ hr.divider {
 div.window {
     width: 100vw;
     height: 100vh;
+    transition: background 0.5s;
 }
 
 h1.fake-typed-header{
