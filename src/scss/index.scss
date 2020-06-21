@@ -17,11 +17,8 @@ h6 {
 body {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-
-    &.dark {
-        background-color: $dark-background-color;
-        color: $dark-mode-font-color;
-    }
+    margin: 0;
+    padding: 0;
 }
 
 .dark {
@@ -31,20 +28,24 @@ body {
 
 hr.divider {
     border-top: 2px solid black;
-    width: 80vw;
+    width: 80%;
     animation: 2s cubic-bezier(.3,.4,.05,.9) 0s 1 expandFromMiddle;
-}
-
-#dark-mode-button {
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
 }
 
 // Page title font
 #page-title,
 #winner {
     font-family: $header-font;
+}
+
+div.window {
+    width: 100vw;
+    height: 100vh;
+}
+
+h1.fake-typed-header{
+    margin: 0;
+    padding: 10px;
 }
 
 .unselectable {
@@ -58,4 +59,26 @@ hr.divider {
 // For now, just the fake cursor
 .blinking {
     animation: blinking 1s infinite;
+}
+
+// Positioning relative to the screen
+.tl {
+    position: fixed;
+    top: $margin-from-side;
+    left: $margin-from-side;
+}
+.tr {
+    position: fixed;
+    top: $margin-from-side;
+    right: $margin-from-side;
+}
+.bl {
+    position: fixed;
+    bottom: $margin-from-side;
+    left: $margin-from-side;
+}
+.br {
+    position: fixed;
+    bottom: $margin-from-side;
+    right: $margin-from-side;
 }

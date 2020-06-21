@@ -29,10 +29,15 @@
         &:hover {
             cursor: pointer;
             background-color: darken($light-background-color, 5);
-        }
+            // background-color: red;
+            .dark & {
+                background-color: lighten($dark-background-color, 5)
+                // background-color: red;
+            }
+        }        
 
         &.preview-move {
-            opacity: 0.6;
+            opacity: 0.4;
         }
 
         &.dark {

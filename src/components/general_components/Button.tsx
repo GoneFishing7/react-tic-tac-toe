@@ -8,6 +8,7 @@ interface Props {
     roundedRight?: boolean;
     roundedNone?: boolean;
     staticOnHover?: boolean;
+    position?: string;
 }
 
 class Button extends React.Component<Props> {
@@ -32,6 +33,9 @@ class Button extends React.Component<Props> {
         }
         if (this.props.staticOnHover) {
             classes.push("button-static");
+        }
+        if (this.props.position) {
+            classes.push(this.props.position);
         }
         return (
             <button

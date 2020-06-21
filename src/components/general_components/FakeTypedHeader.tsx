@@ -1,11 +1,11 @@
 import React from "react";
 
 interface Props {
-    content: string
+    content: string;
 }
 interface State {
-    toType: string,
-    typed: string
+    toType: string;
+    typed: string;
 }
 
 class FakeTypedHeader extends React.Component<Props, State> {
@@ -21,7 +21,10 @@ class FakeTypedHeader extends React.Component<Props, State> {
             setTimeout(() => {
                 this.setState((oldState) => {
                     return {
-                        toType: oldState.toType.slice(1, oldState.toType.length),
+                        toType: oldState.toType.slice(
+                            1,
+                            oldState.toType.length
+                        ),
                         typed: oldState.typed + oldState.toType.slice(0, 1),
                     };
                 });
@@ -31,7 +34,7 @@ class FakeTypedHeader extends React.Component<Props, State> {
     }
     render() {
         return (
-            <h1>
+            <h1 className="fake-typed-header">
                 &gt;{this.state.typed}
                 <span className="blinking unselectable">_</span>
             </h1>

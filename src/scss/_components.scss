@@ -1,5 +1,5 @@
 // BUTTONS
-@mixin buttonVariantOutline($color) {
+@mixin buttonVariantOutline($color, $isDark) {
     // Light variant
     background-color: $light-background-color;
     color: color($color);
@@ -15,7 +15,7 @@
     }
 
     // Dark variant
-    &.dark {
+    @if $isDark {
         background-color: $dark-background-color;
         color: dark($color);
         border-color: dark($color);
@@ -37,7 +37,7 @@
     }
 }
 
-@mixin buttonVariantFilled($color) {
+@mixin buttonVariantFilled($color, $isDark) {
     // Light variant
     background-color: color($color);
     color: $light-background-color;
@@ -53,7 +53,7 @@
     }
 
     // Dark variant
-    &.dark {
+    @if $isDark {
         background-color: dark($color);
 
         @if lightness(color($color))>65% {
@@ -69,7 +69,11 @@
             color: dark($color);
             &.button-static {
                 background-color: dark($color);
-                color: $dark-background-color;
+                @if lightness(color($color))>65% {
+                    color: $dark-background-color;
+                } @else {
+                    color: $light-background-color;
+                }
             }
         }
     }
@@ -97,18 +101,7 @@
     }
 
     &.dark {
-        background-color: $dark-background-color;
-        border-color: $default-button-color;
-        color: $default-button-color;
-
-        &:hover {
-            background-color: $default-button-color;
-            color: $dark-mode-font-color;
-            &.button-static {
-                background-color: $dark-background-color;
-                color: $default-button-color;
-            }
-        }
+        @include buttonVariantOutline("gray", true)
     }
 
     &.button-large {
@@ -134,11 +127,19 @@
 
     // Buttons
     .button-#{$color} {
-        @include buttonVariantOutline($color);
+        @include buttonVariantOutline($color, false);
     }
 
+    .dark .button-#{$color} {
+        @include buttonVariantOutline($color, true);
+    }
+ 
     .button-filled-#{$color} {
-        @include buttonVariantFilled($color);
+        @include buttonVariantFilled($color, false);
+    }
+
+    .dark .button-filled-#{$color} {
+        @include buttonVariantFilled($color, true);
     }
 }
 
