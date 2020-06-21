@@ -5,16 +5,25 @@ import Options from "./settings_components/Settings";
 import { SettingsInterface } from "./general_components/Types";
 import Button from "./general_components/Button";
 
+type PossibleColorMode = "light" | "dark";
+
 interface State {
     showSettings: boolean;
     showGame: boolean;
     settings: SettingsInterface;
-    colorMode: "light" | "dark";
+    colorMode: PossibleColorMode;
 }
 
 class Window extends React.Component<{}, State> {
     constructor(props: Readonly<{}>) {
         super(props);
+
+        // @ts-ignore: Type 'string' is not assignable to type '"light" | "dark"'
+        let cM: PossibleColorMode = localStorage.getItem("colorMode");
+        if (!cM) {
+            localStorage.setItem("colorMode", "light");
+            cM = "light";
+        }
 
         this.state = {
             showSettings: true,
@@ -24,7 +33,7 @@ class Window extends React.Component<{}, State> {
                 whoIsMovingFirst: null,
                 playerTwoMode: null,
             },
-            colorMode: "light",
+            colorMode: cM,
         };
     }
 
@@ -57,12 +66,16 @@ class Window extends React.Component<{}, State> {
         );
     }
 
+    componentDidUpdate() {
+        // Update localstorage colorMode if needed
+        localStorage.setItem("colorMode", this.state.colorMode);
+    }
+
     toggleDarkMode = () => {
-        console.log("Toggling dark mode");
-        this.setState((oldState) => {
-            return {
-                colorMode: oldState.colorMode === "light" ? "dark" : "light",
-            };
+        let nextColorMode: PossibleColorMode =
+            this.state.colorMode === "light" ? "dark" : "light";
+        this.setState({
+            colorMode: nextColorMode,
         });
     };
 
