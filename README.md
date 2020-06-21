@@ -4,7 +4,7 @@ A React-based version of my original project: https://github.com/GoneFishing7/Ti
 ## TODO
 - [x] Add computer emotions?
 - [ ] Add settings changing
-- [ ] Add Reset Button
+- [x] Add Reset Button
 
 ## create-react-app-stuff
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

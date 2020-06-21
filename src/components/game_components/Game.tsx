@@ -3,6 +3,7 @@ import Board from "./Board";
 import AI from "./AI";
 import BoardHelpers from "./BoardHelpers";
 import { SettingsInterface, Symbols } from "../general_components/Types";
+import Button from "../general_components/Button";
 
 interface Props {
     settings: SettingsInterface;
@@ -61,6 +62,14 @@ class Game extends React.Component<Props, State> {
                     {this.state.symbols[this.state.isP1sTurn ? "ply1" : "ply2"]}
                     )
                 </p>
+                <Button
+                    color="orange"
+                    handleClick={() => {
+                        this.reset();
+                    }}
+                >
+                    Reset Board
+                </Button>
                 {this.props.settings["playerTwoMode"] !== "hum" ? (
                     <p>AI: {this.state.AiEmotion || "ㄟ( ▔, ▔ )ㄏ"}</p>
                 ) : (
@@ -150,6 +159,23 @@ class Game extends React.Component<Props, State> {
                 return newState;
             });
         }
+    };
+
+    reset = () => {
+        this.setState({
+            AiEmotion: null,
+            isFinished: false,
+            isP1sTurn:
+                this.props.settings["whoIsMovingFirst"] === "rnd"
+                    ? Math.random() >= 0.5
+                    : this.props.settings["whoIsMovingFirst"] === "ply1",
+            squares: Array(3).fill(Array(3).fill(null)),
+            symbols: {
+                ply1: this.props.settings["whoIsO"] === "ply1" ? "O" : "X",
+                ply2: this.props.settings["whoIsO"] === "ply1" ? "X" : "O",
+            },
+            winner: null,
+        });
     };
 
     handleClick = (rowIndex: number, cellIndex: number) => {
